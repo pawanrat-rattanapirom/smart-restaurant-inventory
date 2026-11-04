@@ -24,15 +24,25 @@ const tables = [
   },
 ]
 
-function TableQRCodes() {
-  const baseUrl = window.location.origin
+// IP Address ของ Mac สำหรับทดสอบผ่าน Wi-Fi เดียวกัน
+const baseUrl = 'https://stunning-marshmallow-7c9072.netlify.app'
 
+function TableQRCodes() {
   function getTableUrl(token) {
     return `${baseUrl}/?table_token=${token}`
   }
 
   function printQRCodes() {
     window.print()
+  }
+
+  async function copyUrl(url) {
+    try {
+      await navigator.clipboard.writeText(url)
+      window.alert('คัดลอกลิงก์สำเร็จ')
+    } catch {
+      window.prompt('คัดลอกลิงก์นี้:', url)
+    }
   }
 
   return (
@@ -46,7 +56,10 @@ function TableQRCodes() {
         marginBottom: 20,
       }}>
         <div>
-          <h2 style={{ margin: '0 0 6px' }}>Table QR Codes</h2>
+          <h2 style={{ margin: '0 0 6px' }}>
+            Table QR Codes
+          </h2>
+
           <p style={{ color: '#718078', margin: 0 }}>
             QR Code สำหรับให้ลูกค้าสแกนเพื่อสั่งอาหาร
           </p>
@@ -67,11 +80,14 @@ function TableQRCodes() {
         </button>
       </div>
 
-      <div className="table-qr-grid" style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-        gap: 20,
-      }}>
+      <div
+        className="table-qr-grid"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gap: 20,
+        }}
+      >
         {tables.map(table => {
           const url = getTableUrl(table.token)
 
@@ -112,7 +128,7 @@ function TableQRCodes() {
               </p>
 
               <button
-                onClick={() => navigator.clipboard.writeText(url)}
+                onClick={() => copyUrl(url)}
                 style={{
                   background: '#eaf4ed',
                   color: '#176b45',
